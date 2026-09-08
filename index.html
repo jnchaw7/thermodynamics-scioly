@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Science Olympiad Thermodynamics study, topic practice, and full-test generator." />
+  <title>ThermoForge — SciOly Thermodynamics Practice</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="ThermoForge home">
+      <span class="brand-mark">ΔT</span>
+      <span><strong>ThermoForge</strong><small>SciOly Thermodynamics</small></span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#home" data-route="home">Dashboard</a>
+      <a href="#learn" data-route="learn">Learn</a>
+      <a href="#practice" data-route="practice">Practice</a>
+      <a href="#test" data-route="test">Full Test</a>
+      <a href="#bank" data-route="bank">Question Bank</a>
+      <a href="#formulas" data-route="formulas">Formula Sheet</a>
+    </nav>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle color theme">◐</button>
+  </header>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="hero panel">
+        <div>
+          <span class="eyebrow">2027 DRAFT-ALIGNED • DIVISION B/C</span>
+          <h1>Learn the rules. Drill weak topics. Generate real-test-style Thermodynamics exams.</h1>
+          <p class="hero-copy">Built around the current draft written-test categories, with original questions modeled on the variety and difficulty patterns in the past exams you supplied: recall, history, diagrams, MCQ, calculations, explanations, and FRQ.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#practice">Start practice</a>
+            <a class="btn" href="#test">Generate full test</a>
+          </div>
+        </div>
+        <div class="hero-meter">
+          <div class="big-number" id="overallAccuracy">—</div>
+          <div class="muted">overall practice accuracy</div>
+          <div class="progress"><span id="overallBar"></span></div>
+          <div class="mini-grid">
+            <div><strong id="attemptCount">0</strong><small>attempts</small></div>
+            <div><strong id="correctCount">0</strong><small>correct</small></div>
+            <div><strong id="bestStreak">0</strong><small>best streak</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">YOUR MAP</span>
+          <h2>Draft-rule mastery</h2>
+        </div>
+        <div class="division-control">
+          <label for="divisionSelect">Division</label>
+          <select id="divisionSelect">
+            <option value="C" selected>Division C</option>
+            <option value="B">Division B</option>
+          </select>
+        </div>
+      </div>
+      <div id="masteryGrid" class="mastery-grid"></div>
+
+      <div class="two-col">
+        <article class="panel compact">
+          <span class="eyebrow">WHAT THE FULL TEST DOES</span>
+          <h3>Minimum coverage is enforced</h3>
+          <p>For Division C, the generator guarantees at least three questions from each of the seven current written-test areas before adding extra mixed questions. Division B uses the six B/C areas.</p>
+        </article>
+        <article class="panel compact">
+          <span class="eyebrow">PAST-EXAM STYLE</span>
+          <h3>Not just calculation spam</h3>
+          <p>Expect phase/heating diagrams, scientist history, vocabulary, conceptual explanations, heat-transfer math, engines, radiation, and C-only entropy/enthalpy. The bank uses fresh questions rather than copying old tests.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="learn" class="page">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">LEARN</span>
+          <h1>Learn one subsection at a time</h1>
+          <p class="muted">Start with the draft-rule overview, then open a full study guide such as Calorimetry, Phase Diagrams, Carnot Cycles, or Entropy. Every guide ends with a mini quiz and real external sources.</p>
+        </div>
+      </div>
+      <h2 class="subsection-title">Draft-rule area overviews</h2>
+      <div id="ruleAreaGrid" class="learn-grid"></div>
+      <div class="section-head compact-head">
+        <div><span class="eyebrow">DEEP-DIVE DOCUMENTS</span><h2>Study guides + mini quizzes</h2></div>
+        <span class="badge" id="guideCountBadge">16 guides</span>
+      </div>
+      <div id="learnGrid" class="learn-grid"></div>
+    </section>
+
+    <section id="practice" class="page">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">TOPIC PRACTICE</span>
+          <h1>Drill one weakness at a time</h1>
+        </div>
+      </div>
+      <div class="practice-layout">
+        <aside class="panel practice-controls">
+          <label>Topic
+            <select id="practiceTopic"></select>
+          </label>
+          <label>Question type
+            <select id="practiceType">
+              <option value="all">All types</option>
+              <option value="mcq">Multiple choice</option>
+              <option value="short">Short answer</option>
+              <option value="calc">Calculation</option>
+              <option value="frq">FRQ / explanation</option>
+              <option value="diagram">Diagram / graph</option>
+            </select>
+          </label>
+          <label>Difficulty
+            <select id="practiceDifficulty">
+              <option value="all">Mixed</option>
+              <option value="1">Foundational</option>
+              <option value="2">Competition</option>
+              <option value="3">Hard</option>
+            </select>
+          </label>
+          <button class="btn primary full" id="newPracticeBtn">New question</button>
+          <div class="practice-stat-row">
+            <span>Current streak</span><strong id="currentStreak">0</strong>
+          </div>
+          <button class="text-btn" id="resetProgressBtn">Reset saved progress</button>
+        </aside>
+        <div id="practiceCard" class="panel question-card"></div>
+      </div>
+    </section>
+
+    <section id="test" class="page">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">FULL TEST GENERATOR</span>
+          <h1>Make a fresh competition-style written test</h1>
+          <p class="muted">Questions are sampled from the rule areas and parameterized calculation templates, so repeated tests are different.</p>
+        </div>
+      </div>
+
+      <div id="testSetup" class="panel test-setup">
+        <div class="setup-grid count-grid">
+          <label>Division
+            <select id="testDivision">
+              <option value="C" selected>Division C</option>
+              <option value="B">Division B</option>
+            </select>
+          </label>
+          <label>MCQ
+            <input id="testMcqCount" type="number" min="0" max="60" value="18" />
+          </label>
+          <label>Short answer
+            <input id="testShortCount" type="number" min="0" max="40" value="4" />
+          </label>
+          <label>Calculations
+            <input id="testCalcCount" type="number" min="0" max="50" value="6" />
+          </label>
+          <label>Diagram / graph
+            <input id="testDiagramCount" type="number" min="0" max="20" value="2" />
+          </label>
+          <label>FRQ / explanation
+            <input id="testFrqCount" type="number" min="0" max="25" value="4" />
+          </label>
+          <label>Timer (minutes)
+            <input id="testMinutes" type="number" min="5" max="120" value="50" />
+          </label>
+          <label>Difficulty mix
+            <select id="testDifficulty">
+              <option value="balanced" selected>Balanced</option>
+              <option value="hard">Harder</option>
+              <option value="foundation">More foundational</option>
+            </select>
+          </label>
+        </div>
+        <label class="coverage-check"><input id="draftCoverage" type="checkbox" checked> <span><strong>Enforce draft-area coverage</strong><small>When your type mix allows it, include at least 3 questions from every applicable rule area.</small></span></label>
+        <div class="callout" id="testCountSummary"><strong>Total:</strong> 34 questions. Division C draft-coverage minimum is 21.</div>
+        <div class="inline-error hidden" id="testSetupError" role="alert"></div>
+        <button class="btn primary" id="generateTestBtn">Generate custom test</button>
+      </div>
+
+      <div id="testRunner" class="hidden">
+        <div class="test-toolbar panel">
+          <div><strong id="testProgressText">Question 1 / 28</strong><span id="testTopicBadge" class="badge"></span></div>
+          <div class="timer" id="timerDisplay">35:00</div>
+          <button class="btn danger small" id="submitTestBtn">Submit test</button>
+        </div>
+        <div class="test-layout">
+          <aside class="panel question-nav" id="questionNav"></aside>
+          <div class="panel question-card" id="testQuestionCard"></div>
+        </div>
+      </div>
+
+      <div id="testResults" class="hidden"></div>
+    </section>
+
+    <section id="bank" class="page">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">QUESTION BANK</span>
+          <h1>Browse the expanded original bank</h1>
+          <p class="muted">The bank is finite and inspectable, not just one random template. It combines conceptual, historical, diagram, calculation, short-answer, and FRQ questions.</p>
+        </div>
+        <div class="bank-total"><strong id="bankTotal">—</strong><small>original bank questions</small></div>
+      </div>
+      <div class="panel bank-controls">
+        <label>Topic<select id="bankTopic"></select></label>
+        <label>Type<select id="bankType"><option value="all">All types</option><option value="mcq">MCQ</option><option value="short">Short answer</option><option value="calc">Calculation</option><option value="diagram">Diagram</option><option value="frq">FRQ</option></select></label>
+        <label>Difficulty<select id="bankDifficulty"><option value="all">All</option><option value="1">Foundational</option><option value="2">Competition</option><option value="3">Hard</option></select></label>
+        <label>Search<input id="bankSearch" type="search" placeholder="e.g. Carnot, phase, Joule" /></label>
+      </div>
+      <p class="muted" id="bankMatchText"></p>
+      <div id="bankList" class="bank-list"></div>
+      <div class="hero-actions"><button class="btn" id="bankMoreBtn">Show more</button><a class="btn primary" href="#practice">Practice randomized questions</a></div>
+    </section>
+
+    <section id="formulas" class="page">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">REFERENCE</span>
+          <h1>Compact formula sheet</h1>
+          <p class="muted">The core relationships that repeatedly show up in current-rule and past-exam-style questions.</p>
+        </div>
+      </div>
+      <div id="formulaGrid" class="formula-grid"></div>
+    </section>
+  </main>
+
+  <dialog id="learnDialog" class="learn-dialog">
+    <button class="dialog-close" id="dialogClose" aria-label="Close">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <footer>
+    <span>ThermoForge • static HTML/CSS/JS • GitHub Pages ready</span>
+    <span>Progress is stored only in your browser.</span>
+  </footer>
+
+  <script src="guides.js"></script>
+  <script src="bank.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
